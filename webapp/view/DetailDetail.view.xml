@@ -1,0 +1,134 @@
+<mvc:View displayBlock="true" controllerName="com.vistex.taskmanagement.controller.DetailDetail" height="100%" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.uxap" xmlns:m="sap.m" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form">
+	<m:Page>
+		<ObjectPageLayout id="ObjectPageLayout" showTitleInHeaderContent="true" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="true"
+			headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+			<headerTitle>
+				<ObjectPageDynamicHeaderTitle>
+					<expandedHeading>
+						<m:Title text="{masterTaskManagementModel>tasks/taskTitle}" wrapping="true" class="sapUiSmallMarginEnd"/>
+					</expandedHeading>
+					<actions>
+						<m:Button id="editBtn" text="Edit" type="Emphasized" press="handleEditPress"/>
+						<m:Button id="deleteBtn" text="Delete" type="Transparent" press="handleDeletePress"/>
+						<m:Button icon="sap-icon://action" type="Transparent"/>
+					</actions>
+					<navigationActions>
+						<m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn"
+							tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
+						<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn"
+							tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
+						<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose" tooltip="Close column" id="closeButton"
+							visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
+					</navigationActions>
+				</ObjectPageDynamicHeaderTitle>
+			</headerTitle>
+			<headerContent>
+				<m:FlexBox wrap="Wrap" fitContainer="true">
+					<m:VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom">
+						<m:Title class="sapUiTinyMarginBottom">
+							<m:Link text="Task Details"/>
+						</m:Title>
+						<m:HBox class="sapUiTinyMarginBottom" renderType="Bare">
+							<m:Label text="Processor:" class="sapUiTinyMarginEnd"/>
+							<m:Text text="{masterTaskManagementModel>tasks/taskAssigneeName}"/>
+						</m:HBox>
+						<m:HBox class="sapUiTinyMarginBottom" renderType="Bare">
+							<m:Label text="Task Type:" class="sapUiTinyMarginEnd"/>
+							<m:Text text=" {masterTaskManagementModel>tasks/taskTypeName}"/>
+						</m:HBox>
+					</m:VBox>
+					<m:VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom">
+						<m:Title class="sapUiTinyMarginBottom">
+							<m:Link text="Status"/>
+						</m:Title>
+						<m:ObjectStatus text="{masterTaskManagementModel>tasks/taskStatus}"
+							state="{path: 'masterTaskManagementModel>tasks/taskStatus', formatter:'.formatter.formatTaskState'}" class="sapMObjectStatusLarge"/>
+					</m:VBox>
+					<m:VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom">
+						<m:Title text="Priority" class="sapUiTinyMarginBottom"/>
+						<m:ObjectStatus text="{masterTaskManagementModel>tasks/taskPriorityName}"
+							icon="{path: 'masterTaskManagementModel>tasks/taskPrioCode', formatter:'.formatter.getPriorityIcon'}" class="sapMObjectStatusLarge"/>
+					</m:VBox>
+				</m:FlexBox>
+			</headerContent>
+			<sections>
+				<ObjectPageSection>
+					<subSections>
+						<ObjectPageSubSection id="GeneralInfo" title="Basic Information"></ObjectPageSubSection>
+					</subSections>
+				</ObjectPageSection>
+				<ObjectPageSection title="Comments">
+					<subSections>
+						<ObjectPageSubSection>
+							<blocks>
+								<m:VBox class="sapUiSmallMargin">
+									<m:FeedInput post="onPost" icon="" class="sapUiSmallMarginTopBottom" placeholder="Enter your comments..."/>
+									<m:List showSeparators="Inner" items="{masterTaskManagementModel>tasks/taskComments}">
+										<m:FeedListItem sender="{masterTaskManagementModel>Author}" icon="{}" senderPress="onSenderPress" iconPress="onIconPress"
+											iconDensityAware="false" info="{masterTaskManagementModel>Type}" timestamp="{masterTaskManagementModel>Date}"
+											text="{masterTaskManagementModel>Text}" convertLinksToAnchorTags="All"/>
+									</m:List>
+								</m:VBox>
+							</blocks>
+						</ObjectPageSubSection>
+					</subSections>
+				</ObjectPageSection>
+			</sections>
+			<sections>
+			
+				<ObjectPageSection title="Attachments">
+					<subSections>
+						<ObjectPageSubSection>
+							<blocks>
+								<m:UploadCollection id="UploadCollection" maximumFilenameLength="{settings>/maximumFilenameLength}"
+									maximumFileSize="{settings>/maximumFileSize}" multiple="true" change="onChange" fileDeleted="onFileDeleted"
+									filenameLengthExceed="onFilenameLengthExceed"  fileSizeExceed="onFileSizeExceed" fileType="{fileTypes>/selected}"
+									selectionChange="onSelectionChange" typeMissmatch="onTypeMissmatch" uploadComplete="onUploadComplete"
+									beforeUploadStarts="onBeforeUploadStarts" uploadTerminated="onUploadTerminated"
+									items="{ path: 'masterTaskManagementModel>tasks/taskAttachments/items', templateShareable: false }" numberOfAttachmentsText="Upload(s)"
+									showSeparators="{settings>/showSeparators}" uploadEnabled="{settings>/uploadEnabled}"
+									uploadButtonInvisible="{=!${settings>/uploadButtonVisible}}" mode="{settings>/mode}">
+									<m:Toolbar>
+										<m:OverflowToolbar id="myId">
+											<m:Title id="attachmentTitle"></m:Title>
+											<m:ToolbarSpacer></m:ToolbarSpacer>
+											<m:Button id="deleteSelectedButton" text="Delete" press="onDeleteSelectedItems" enabled="false" visible="false" type="Transparent"/>
+											<m:ToggleButton id="selectAllButton" text="Select all" press="onSelectAllPress" enabled="false" visible="false" type="Transparent"/>
+											<m:UploadCollectionToolbarPlaceholder/>
+										</m:OverflowToolbar>
+									</m:Toolbar>
+									<m:items>
+										<m:UploadCollectionItem documentId="{masterTaskManagementModel>documentId}" fileName="{masterTaskManagementModel>fileName}"
+											mimeType="{masterTaskManagementModel>mimeType}" thumbnailUrl="{masterTaskManagementModel>thumbnailUrl}"
+											url="{masterTaskManagementModel>url}"  enableDelete="{settings>/enableDelete}"
+											visibleDelete="{settings>/visibleDelete}"
+											attributes="{path : 'masterTaskManagementModel>attributes', templateShareable : false}"
+											statuses="{path : 'masterTaskManagementModel>statuses', templateShareable : false}"
+											markers="{path : 'markers', factory: '.createObjectMarker'}" selected="{masterTaskManagementModel>selected}">
+											<m:attributes>
+												<m:ObjectAttribute title="{masterTaskManagementModel>title}"
+													text="{path : 'masterTaskManagementModel>text', formatter : '.formatAttribute'}" active="{masterTaskManagementModel>active}"
+													press="onAttributePress"/>
+											</m:attributes>
+											<m:statuses>
+												<m:ObjectStatus title="{masterTaskManagementModel>title}" text="{masterTaskManagementModel>text}" state="{masterTaskManagementModel>state}"/>
+											</m:statuses>
+										</m:UploadCollectionItem>
+									</m:items>
+								</m:UploadCollection>
+							</blocks>
+						</ObjectPageSubSection>
+					</subSections>
+				</ObjectPageSection>
+			</sections>
+		</ObjectPageLayout>
+		<m:footer>
+			<m:OverflowToolbar id="otbFooter">
+				<m:ToolbarSpacer></m:ToolbarSpacer>
+				<m:Button tooltip="Save" text="Save" press="handleSavePress"/>
+				<m:Button tooltip="Cancel" text="Cancel" press="handleCancelPress"/>
+			</m:OverflowToolbar>
+		</m:footer>
+	</m:Page>
+</mvc:View>

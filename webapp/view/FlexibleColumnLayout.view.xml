@@ -1,0 +1,21 @@
+<mvc:View xmlns="sap.f" xmlns:m="sap.m" xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+	controllerName="com.vistex.taskmanagement.controller.FlexibleColumnLayout" height="100%">
+	<m:Page>
+		<m:customHeader>
+			<ShellBar title="Vistex - Task Management System " secondTitle="Manage your tasks with ease" homeIcon="" showCopilot="true" showSearch="true"
+				showNotifications="true" showProductSwitcher="true" showNavButton="{= ${/layout} === 'EndColumnFullScreen'}" notificationsNumber="1">
+				<menu>
+					<m:Menu>
+						<m:MenuItem text="Utilities"/>
+					</m:Menu>
+				</menu>
+				<profile>
+					<m:Avatar initials="UI"/>
+				</profile>
+			</ShellBar>
+		</m:customHeader>
+			<m:App class="myAppDemoWT">
+				<FlexibleColumnLayout id="fcl" stateChange="onStateChanged" layout="{/layout}" backgroundDesign="Solid"></FlexibleColumnLayout>
+			</m:App>
+		</m:Page>
+</mvc:View>

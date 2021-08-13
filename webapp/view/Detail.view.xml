@@ -1,0 +1,53 @@
+<mvc:View displayBlock="true" controllerName="com.vistex.taskmanagement.controller.Detail" height="100%" xmlns="sap.m" xmlns:f="sap.f"
+	xmlns:mvc="sap.ui.core.mvc">
+	
+	<f:DynamicPage id="dynamicPageId" toggleHeaderOnTitleClick="false">
+		<!-- DynamicPage Title -->
+	
+		<!-- DynamicPage Content -->
+		<f:content>
+			<Table id="tasksTable" inset="false" items="{path: 'masterTaskManagementModel>/'}" noDataText="No issues created yet" class="sapFDynamicPageAlignContent" width="auto">
+				<headerToolbar>
+					<OverflowToolbar>
+						<Button type="Emphasized" text="Create Project" press="onCreateProject"/>
+						<Button type="Transparent" text="Show report (custom control- inside)" press="renderTaskReport"/>
+						<ToolbarSpacer/>
+						<SearchField search="onSearch" placeholder="Search by Project Code" width="17.5rem"/>
+						<Button id="exportBtn" icon="sap-icon://excel-attachment" press="onExport"/>
+						<Button id="createTaskBtn" type="Transparent" text="Create Issue" press="onCreateIssue" tooltip="Create a new issue"/>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column width="12em">
+						<Text text="Issues"/>
+					</Column>
+					<Column hAlign="End">
+						<Text text="Processor"/>
+					</Column>
+					<Column hAlign="End">
+						<Text text="Status"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press="onListItemPress">
+						<cells>
+							<ObjectIdentifier title="{masterTaskManagementModel>projectCode} - {masterTaskManagementModel>generatedProjectNo}"
+								text="{masterTaskManagementModel>tasks/taskTitle}"/>
+								<Text text="{masterTaskManagementModel>tasks/taskAssigneeName}"/>
+							<ObjectStatus text="{masterTaskManagementModel>tasks/taskStatus}"
+								state="{path: 'masterTaskManagementModel>tasks/taskStatus', formatter:'.formatter.formatTaskState'}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</f:content>
+		<!-- DynamicPage Footer -->
+		<f:footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button type="Accept" text="Accept"/>
+				<Button type="Reject" text="Reject"/>
+			</OverflowToolbar>
+		</f:footer>
+	</f:DynamicPage>
+</mvc:View>

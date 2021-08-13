@@ -1,0 +1,22 @@
+<core:FragmentDefinition xmlns:core='sap.ui.core' xmlns='sap.m' xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form"
+	xmlns:u="sap.ui.unified" xmlns:r="sap.ui.richtexteditor">
+	<Dialog id="registerUserDialog" title="New User Registration">
+		<VBox class="sapUiSmallMargin">
+				<MessageStrip id="regUserErrMsgStrip" type="Error" visible="false" text="User Name exists/empty or Password is invalid" showIcon="true" class="sapUiMediumMarginBottom"></MessageStrip>
+			<f:SimpleForm editable="true" layout="ResponsiveGridLayout">
+				<f:content>
+					<Label text="{i18n>Name}"/>
+					<Input id="idUserName" value="{registerUserModel>/name}"></Input>
+					<Label text="{i18n>Password}"/>
+					<Input value="{registerUserModel>/password}" type="Password" liveChange="validatePassword" valueLiveUpdate="true"></Input>
+				</f:content>
+			</f:SimpleForm>
+		</VBox>
+		<beginButton>
+			<Button text="{i18n>Register}" press="onCreateUser" enabled="true" type="Emphasized"/>
+		</beginButton>
+		<endButton>
+			<Button text="{i18n>Cancel}" press="onCloseRegisterUserDialog"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

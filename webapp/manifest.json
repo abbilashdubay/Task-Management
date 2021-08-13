@@ -1,0 +1,150 @@
+{
+	"_version": "1.21.0",
+	"sap.app": {
+		"id": "com.vistex.taskmanagement",
+		"type": "application",
+		"i18n": {
+			"bundleUrl": "i18n/i18n.properties",
+			"supportedLocales": [
+				""
+			],
+			"fallbackLocale": ""
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"dataSources": {
+			"taskManagementRemote": {
+				"uri": "/here/goes/your/serviceUrl/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/metadata.xml"
+				}
+			},
+			"userModel":{
+				"uri": "localService/mockdata/Users.json",
+				"type": "JSON"
+			},
+			"reportModel":{
+				"uri": "localService/mockdata/UserBurndownData.json",
+				"type": "JSON"
+			}
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "sap-icon://task"
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "com.vistex.taskmanagement.view.FlexibleColumnLayout",
+			"type": "XML",
+			"async": true,
+			"id": "fcl"
+		},
+		"dependencies": {
+			"minUI5Version": "1.90",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {}
+			}
+		},
+		"resources": {
+			"css": [{
+				"uri": "css/style.css"
+			}]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.f.routing.Router",
+				"viewType": "XML",
+				"viewPath": "com.vistex.taskmanagement.view",
+				"controlId": "fcl",
+				"transition": "slide",
+				"bypassed": {},
+				"async": true
+			},
+			"routes": [{
+				"pattern": ":layout:",
+				"name": "login",
+				"target": [
+					"login"
+				]
+			}, {
+				"pattern": "detail/{layout}/{userName}",
+				"name": "detail",
+				"target": [
+					"detail"
+				]
+			}, {
+				"pattern": "detailDetail/{layout}/{userName}/{task}",
+				"name": "detailDetail",
+				"target": [
+					"detail",
+					"detailDetail"
+				]
+			}],
+			"targets": {
+				"login": {
+					"viewName": "Login",
+					"controlAggregation": "beginColumnPages"
+				},
+				"detail": {
+					"viewName": "Detail",
+					"controlAggregation": "beginColumnPages"
+				},
+				"detailDetail": {
+					"viewName": "DetailDetail",
+					"controlAggregation": "midColumnPages"
+				}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "com.vistex.taskmanagement.i18n.i18n"
+				
+				}
+			},
+			"userModel": {
+				"type": "sap.ui.model.json.JSONModel",
+				"dataSource": "userModel"
+			},
+			"reportModel": {
+				"type": "sap.ui.model.json.JSONModel",
+				"dataSource": "reportModel"
+			},
+			"taskManagement": {
+				"dataSource": "taskManagementRemote"
+			},
+			"projectModel": {
+				"type": "sap.ui.model.json.JSONModel"
+			},
+			"masterTaskManagementModel": {
+				"type": "sap.ui.model.json.JSONModel"
+			},
+			"createTaskModel": {
+				"type": "sap.ui.model.json.JSONModel"
+			},
+			"viewModel": {
+				"type": "sap.ui.model.json.JSONModel"
+			}
+		}
+	}
+}
